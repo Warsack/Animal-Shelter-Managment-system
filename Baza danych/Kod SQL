@@ -1,1 +1,83 @@
+Table Uzytkownik{
+  Id_uzytkownika int [pk, increment]
+  Imie varchar(100)
+  Nazwisko varchar(100)
+  Email varchar(150)
+  Telefon integer(20)
+  Hasło varchar(255)
+  Rola varchar (50)
+}
 
+Table Zwierze{
+  Id_zwierzecia int [pk, increment]
+  Imie varchar (100)
+  Gatunek varchar (50)
+  Rasa varchar (100)
+  Wiek int
+  Płeć varchar(10)
+  Status varchar(50) //dostepne, adoptowane, kwarantanna
+  data_przyjecia date
+  opis text
+  zdjecie varchar(255)
+  Id_boksu int [ref: > Boks.Id_boksu]
+}
+
+Table Boks{
+  Id_boksu int [pk, increment]
+  numer int
+  typ varchar(50)
+  pojemnosc int
+}
+
+Table Pracownik{
+  Id_pracownika int [pk, increment]
+  Imie varchar(100)
+  Nazwisko varchar (100)
+  Stanowisko varchar(100)
+  Telefon varchar(20)
+  email varchar(150)
+}
+
+
+Table Adopcja{
+  Id_adopcji int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  data_zlozenia date
+  status varchar(50) // oczekuje, zaakpcetowana, odrzucona
+  Id_pracownika int [ref: > Pracownik.Id_pracownika]
+}
+
+Table Spacer{
+  Id_spaceru int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  data_spaceru date
+  godzina time
+  status varchar(50) // zarezerwowany, odbyty, anulowany
+}
+
+Table FormularzKontaktowy {
+  Id_wiadomosci int [pk, increment]
+  Imie varchar(100)
+  email varchar(50)
+  temat varchar(100)
+  tresc text
+  data_wyslania datetime
+  status varchar(50)
+}
+
+Table Wolontariusz{
+  Id_wolontariusza int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  data_rozpoczecia date
+  status varchar(50)
+}
+
+Table Darowizna{
+  Id_darowizny int [pk, increment]
+  Imie varchar(100)
+  email varchar(150)
+  kwota decimal
+  data datetime
+}
