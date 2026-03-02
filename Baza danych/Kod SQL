@@ -81,4 +81,3 @@ Table Darowizna{
   kwota decimal
   data datetime
 }
-cycki
