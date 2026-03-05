@@ -123,6 +123,10 @@ Table HistoriaBosku{
 }
 
 //Zmiany
-// Od teraz widać historię Wolontariatu użytkownika (od kiedy był wolontariuszem i kiedy zakończył
-//
+// W historii wolontariatu widać od kiedy pracownik był wolontariuszem i kiedy zakończył działanie
+// W historii boksu widać gdzie zwierze było wcześniej, kto je przeniósł i od kiedy do kiedy przebywało w boksie
+// W encji darowizna zostało dodana informacja kto wpłacił, na jakie zwierzę i kto przyjął
+// Encja Opieka od adopcji przechowuje dane które będą pomagały przypominać o np. szczepieniu po adopcji
+// Zostało dodana informacja o tym kto zaadoptował zwierze oraz jakie zwierze zostało zaadoptowane
+// Od teraz przy umówieniu się na spacer widoczne jest ile zwierząt zostało wyprowadzonych na spacer
 
