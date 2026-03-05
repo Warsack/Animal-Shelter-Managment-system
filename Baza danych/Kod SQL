@@ -34,7 +34,7 @@ Table Pracownik{
   Imie varchar(100)
   Nazwisko varchar (100)
   Stanowisko varchar(100)
-  Telefon varchar(20)
+  Telefon integer(20)
   email varchar(150)
 }
 
