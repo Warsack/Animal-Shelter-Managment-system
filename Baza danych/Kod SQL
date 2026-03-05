@@ -34,7 +34,7 @@ Table Pracownik{
   Imie varchar(100)
   Nazwisko varchar (100)
   Stanowisko varchar(100)
-  Telefon integer(20)
+  Telefon varchar(20)
   email varchar(150)
 }
 
@@ -65,6 +65,9 @@ Table FormularzKontaktowy {
   tresc text
   data_wyslania datetime
   status varchar(50)
+
+  Id_pracownika_przyjal int [ref: > Pracownik.Id_pracownika]
+  Id_pracownika_odpowiedzial int [ref: > Pracownik.Id_pracownika]
 }
 
 Table Wolontariusz{
@@ -76,8 +79,50 @@ Table Wolontariusz{
 
 Table Darowizna{
   Id_darowizny int [pk, increment]
-  Imie varchar(100)
-  email varchar(150)
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  Id_pracownika int [ref: > Pracownik.Id_pracownika]
   kwota decimal
   data datetime
 }
+
+Table Spacer_Zwierze{
+  Id int [pk,increment]
+  Id_spaceru int [ref: > Spacer.Id_spaceru]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+}
+
+Table Adopcja_Zwierze{
+  Id int [pk, increment]
+  Id_adopcji int [ref: > Adopcja.Id_adopcji]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+}
+
+Table OpiekaPoAdopcji{
+  Id int [pk, increment]
+  Id_adopcji int [ref: > Adopcja.Id_adopcji]
+  opis text
+  data_przypomnienia date
+}
+
+Table HistoriaWolontariatu{
+  Id int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  data_rozpoczecia date
+  data_zakonczenia date
+  status varchar(300)
+}
+
+Table HistoriaBosku{
+  Id int [pk, increment]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  Id_boksu int [ref: > Boks.Id_boksu]
+  Id_pracownika int [ref: > Pracownik.Id_pracownika]
+  data_od date
+  data_do date
+}
+
+//Zmiany
+// Od teraz widać historię Wolontariatu użytkownika (od kiedy był wolontariuszem i kiedy zakończył
+//
+
