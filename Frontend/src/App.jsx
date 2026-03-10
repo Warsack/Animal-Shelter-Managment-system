@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import DogDetails from './pages/DogDetails';
+import Admin from './pages/Admin'; // 1. IMPORTUJEMY NOWĄ STRONĘ
 
 function App() {
   return (
@@ -11,14 +12,24 @@ function App() {
         <header className="sticky top-0 z-50 w-full border-b border-[#13ec13]/10 bg-[#f6f8f6]/80 backdrop-blur-md px-6 py-4 md:px-20">
           <div className="mx-auto flex max-w-[1200px] items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#13ec13] text-slate-900 shadow-lg shadow-[#13ec13]/20">
-                <span className="material-symbols-outlined text-2xl">pets</span>
-              </div>
-              <h2 className="text-xl font-extrabold tracking-tight text-slate-900">Łapa Pomocy</h2>
+              {/* Kliknięcie w logo teraz przenosi do strony głównej */}
+              <a href="/" className="flex items-center gap-3 cursor-pointer">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#13ec13] text-slate-900 shadow-lg shadow-[#13ec13]/20">
+                  <span className="material-symbols-outlined text-2xl">pets</span>
+                </div>
+                <h2 className="text-xl font-extrabold tracking-tight text-slate-900">Łapa Pomocy</h2>
+              </a>
             </div>
-            <button className="rounded-xl bg-[#13ec13] px-6 py-2.5 text-sm font-bold text-slate-900 shadow-md transition-all">
-              Rejestracja
-            </button>
+            
+            {/* Przycisk Panelu Admina obok Rejestracji, żebyś mógł go łatwo znaleźć */}
+            <div className="flex gap-4">
+              <a href="/admin" className="rounded-xl border-2 border-slate-200 px-6 py-2.5 text-sm font-bold text-slate-600 hover:border-[#13ec13] transition-all">
+                Panel Admina
+              </a>
+              <button className="rounded-xl bg-[#13ec13] px-6 py-2.5 text-sm font-bold text-slate-900 shadow-md transition-all">
+                Rejestracja
+              </button>
+            </div>
           </div>
         </header>
 
@@ -26,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pies/:id" element={<DogDetails />} />
+          <Route path="/admin" element={<Admin />} /> {/* 2. DODAJEMY ŚCIEŻKĘ DO ADMINA */}
         </Routes>
 
         <footer className="mt-20 border-t border-slate-100 py-10 text-center text-slate-400 text-sm">
