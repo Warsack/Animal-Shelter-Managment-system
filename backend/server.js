@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
-// --- KLUCZOWA POPRAWKA: Zwiększenie limitów danych ---
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -21,7 +21,7 @@ async function startServer() {
         
         const db = client.db("Schronisko");
 
-        // 1. Endpoint do pobierania wszystkich zwierząt
+        
         app.get('/api/zwierzeta', async (req, res) => {
             try {
                 const collection = db.collection("Zwierzeta");
@@ -32,7 +32,7 @@ async function startServer() {
             }
         });
 
-        // 2. Endpoint do odbierania wniosków o adopcję
+        
         app.post('/api/adopcja', async (req, res) => {
             try {
                 const zgloszenia = db.collection("Zgloszenia");
@@ -46,7 +46,7 @@ async function startServer() {
             }
         });
 
-        // 🚀 3. Endpoint do dodawania nowego zwierzaka (Panel Admina)
+        
         app.post('/api/nowy-obiekt', async (req, res) => {
             console.log("📥 Serwer odebrał żądanie POST na /api/zwierzeta");
             try {
