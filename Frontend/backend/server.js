@@ -1,23 +1,30 @@
+require('dotenv').config(); // Ładowanie .env na samym początku!
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Logowanie dla testu (pokaże link w konsoli, jeśli .env działa)
+console.log("Mój link z ENV to:", process.env.MONGO_URI);
+
 app.use(cors());
 
-// --- KLUCZOWA POPRAWKA: Zwiększenie limitów danych ---
+// --- Zwiększenie limitów danych dla zdjęć ---
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-const client = new MongoClient(process.env.MONGODB_URI);
+// Używamy zmiennej z .env, a jeśli jej nie ma, bierzemy link na sztywno
+const DB_URL = process.env.MONGO_URI || "mongodb+srv://admin:123@schronisko.k8imroe.mongodb.net/?appName=Schronisko";
+
+// Tworzymy klienta MongoDB (używamy MongoClient, nie mongoose)
+const client = new MongoClient(DB_URL);
 
 async function startServer() {
     try {
         await client.connect();
-        console.log("✅ Połączono z MongoDB Atlas!");
+        console.log("✅ BAZA DANYCH PODŁĄCZONA (MongoDB Atlas)!");
         
         const db = client.db("Schronisko");
 
@@ -46,9 +53,9 @@ async function startServer() {
             }
         });
 
-        // 🚀 3. Endpoint do dodawania nowego zwierzaka (Panel Admina)
+        // 3. Endpoint do dodawania nowego zwierzaka (Panel Admina)
         app.post('/api/nowy-obiekt', async (req, res) => {
-            console.log("📥 Serwer odebrał żądanie POST na /api/zwierzeta");
+            console.log("📥 Serwer odebrał żądanie POST na /api/nowy-obiekt");
             try {
                 const collection = db.collection("Zwierzeta");
                 const noweZwierze = { 
@@ -66,7 +73,7 @@ async function startServer() {
 
         app.listen(PORT, "0.0.0.0", () => {
             console.log(`🚀 Serwer śmiga na porcie ${PORT}`);
-            console.log("📌 Trasy aktywne: GET /api/zwierzeta, POST /api/adopcja, POST /api/zwierzeta");
+            console.log("📌 Trasy aktywne: GET /api/zwierzeta, POST /api/adopcja, POST /api/nowy-obiekt");
         });
         
     } catch (e) {
