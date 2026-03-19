@@ -1,0 +1,132 @@
+Table Uzytkownik{
+  Id_uzytkownika int [pk, increment]
+  Imie varchar(100)
+  Nazwisko varchar(100)
+  Email varchar(150)
+  Telefon integer(20)
+  Hasło varchar(255)
+  Rola varchar (50)
+}
+
+Table Zwierze{
+  Id_zwierzecia int [pk, increment]
+  Imie varchar (100)
+  Gatunek varchar (50)
+  Rasa varchar (100)
+  Wiek int
+  Płeć varchar(10)
+  Status varchar(50) //dostepne, adoptowane, kwarantanna
+  data_przyjecia date
+  opis text
+  zdjecie varchar(255)
+  Id_boksu int [ref: > Boks.Id_boksu]
+}
+
+Table Boks{
+  Id_boksu int [pk, increment]
+  numer int
+  typ varchar(50)
+  pojemnosc int
+}
+
+Table Pracownik{
+  Id_pracownika int [pk, increment]
+  Imie varchar(100)
+  Nazwisko varchar (100)
+  Stanowisko varchar(100)
+  Telefon varchar(20)
+  email varchar(150)
+}
+
+
+Table Adopcja{
+  Id_adopcji int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  data_zlozenia date
+  status varchar(50) // oczekuje, zaakpcetowana, odrzucona
+  Id_pracownika int [ref: > Pracownik.Id_pracownika]
+}
+
+Table Spacer{
+  Id_spaceru int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  data_spaceru date
+  godzina time
+  status varchar(50) // zarezerwowany, odbyty, anulowany
+}
+
+Table FormularzKontaktowy {
+  Id_wiadomosci int [pk, increment]
+  Imie varchar(100)
+  email varchar(50)
+  temat varchar(100)
+  tresc text
+  data_wyslania datetime
+  status varchar(50)
+
+  Id_pracownika_przyjal int [ref: > Pracownik.Id_pracownika]
+  Id_pracownika_odpowiedzial int [ref: > Pracownik.Id_pracownika]
+}
+
+Table Wolontariusz{
+  Id_wolontariusza int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  data_rozpoczecia date
+  status varchar(50)
+}
+
+Table Darowizna{
+  Id_darowizny int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  Id_pracownika int [ref: > Pracownik.Id_pracownika]
+  kwota decimal
+  data datetime
+}
+
+Table Spacer_Zwierze{
+  Id int [pk,increment]
+  Id_spaceru int [ref: > Spacer.Id_spaceru]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+}
+
+Table Adopcja_Zwierze{
+  Id int [pk, increment]
+  Id_adopcji int [ref: > Adopcja.Id_adopcji]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+}
+
+Table OpiekaPoAdopcji{
+  Id int [pk, increment]
+  Id_adopcji int [ref: > Adopcja.Id_adopcji]
+  opis text
+  data_przypomnienia date
+}
+
+Table HistoriaWolontariatu{
+  Id int [pk, increment]
+  Id_uzytkownika int [ref: > Uzytkownik.Id_uzytkownika]
+  data_rozpoczecia date
+  data_zakonczenia date
+  status varchar(300)
+}
+
+Table HistoriaBosku{
+  Id int [pk, increment]
+  Id_zwierzecia int [ref: > Zwierze.Id_zwierzecia]
+  Id_boksu int [ref: > Boks.Id_boksu]
+  Id_pracownika int [ref: > Pracownik.Id_pracownika]
+  data_od date
+  data_do date
+}
+
+//Zmiany
+// W historii wolontariatu widać od kiedy pracownik był wolontariuszem i kiedy zakończył działanie
+// W historii boksu widać gdzie zwierze było wcześniej, kto je przeniósł i od kiedy do kiedy przebywało w boksie
+// W encji darowizna zostało dodana informacja kto wpłacił, na jakie zwierzę i kto przyjął
+// Encja Opieka od adopcji przechowuje dane które będą pomagały przypominać o np. szczepieniu po adopcji
+// Zostało dodana informacja o tym kto zaadoptował zwierze oraz jakie zwierze zostało zaadoptowane
+// Od teraz przy umówieniu się na spacer widoczne jest ile zwierząt zostało wyprowadzonych na spacer
+

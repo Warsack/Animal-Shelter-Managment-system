@@ -11,6 +11,15 @@ app.use(express.json());
 
 const client = new MongoClient(process.env.MONGODB_URI);
 
+function requireAdmin(req, res, next) {
+    const auth = req.headers['authorization'];
+    const token = auth && auth.startsWith('Bearer ') ? auth.slice(7) : null;
+    if (!token || token !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).json({ error: 'Brak dostępu' });
+    }
+    next();
+}
+
 async function startServer() {
     try {
         await client.connect();
@@ -19,7 +28,7 @@ async function startServer() {
         const db = client.db("Schronisko");
         const collection = db.collection("Zwierzeta");
 
-        // 1. Endpoint do pobierania wszystkich zwierząt
+        
         app.get('/api/zwierzeta', async (req, res) => {
             try {
                 const zwierzeta = await collection.find({}).toArray();
@@ -29,7 +38,7 @@ async function startServer() {
             }
         });
 
-        // 2. Endpoint do odbierania wniosków o adopcję
+        
         app.post('/api/adopcja', async (req, res) => {
             try {
                 const zgloszenia = db.collection("Zgloszenia");
