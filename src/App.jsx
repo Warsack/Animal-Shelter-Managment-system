@@ -21,9 +21,14 @@ function App() {
               </a>
             </div>
             
-            <button className="rounded-xl bg-[#13ec13] px-6 py-2.5 text-sm font-bold text-slate-900 shadow-md transition-all">
-              Rejestracja
-            </button>
+            <div className="flex items-center gap-6">
+              <a href="/#zwierzeta" className="text-sm font-bold text-slate-600 hover:text-[#13ec13] transition-colors">
+                Zwierzęta
+              </a>
+              <a href="/#opinie" className="text-sm font-bold text-slate-600 hover:text-[#13ec13] transition-colors">
+                Opinie
+              </a>
+            </div>
           </div>
         </header>
 
