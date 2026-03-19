@@ -6,7 +6,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/zwierzeta')
+    fetch(`${import.meta.env.VITE_API_URL}/api/zwierzeta`)
       .then(res => res.json())
       .then(data => {
         setZwierzeta(data);

@@ -11,12 +11,13 @@ function DogDetails() {
   const [wyslano, setWyslano] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/zwierzeta`)
-      .then(res => res.json())
-      .then(data => {
-        const znaleziony = data.find(p => p._id === id);
-        setPies(znaleziony);
-      });
+    fetch(`${import.meta.env.VITE_API_URL}/api/zwierzeta/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Nie znaleziono');
+        return res.json();
+      })
+      .then(data => setPies(data))
+      .catch(() => setPies(null));
   }, [id]);
 
   // NOWE: Funkcja wysyłająca dane do backendu
