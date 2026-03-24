@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 function Admin() {
-  // Stan dla pól formularza
+  const [token, setToken] = useState(() => sessionStorage.getItem('adminToken') || '');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [loginError, setLoginError] = useState('');
+
   const [formData, setFormData] = useState({
     imie: '',
     rasa: '',
@@ -12,61 +15,98 @@ function Admin() {
     gatunek: 'pies'
   });
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    sessionStorage.setItem('adminToken', passwordInput);
+    setToken(passwordInput);
+    setPasswordInput('');
+    setLoginError('');
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminToken');
+    setToken('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Używamy localhost, aby przeglądarka sama zdecydowała o IPv4 lub IPv6
-    const targetUrl = 'http://localhost:5000/api/nowy-obiekt';
-    
-    console.log("🚀 Próba wysłania danych pod adres:", targetUrl);
-    console.log("📦 Dane do wysłania:", formData);
 
     try {
-      const res = await fetch(targetUrl, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/nowy-obiekt`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });
 
-      // Sprawdzamy status odpowiedzi
+      if (res.status === 401) {
+        sessionStorage.removeItem('adminToken');
+        setToken('');
+        setLoginError('Nieprawidłowe hasło. Zaloguj się ponownie.');
+        return;
+      }
+
       if (res.ok) {
-        const data = await res.json();
-        console.log("✅ Sukces serwera:", data);
         alert("✅ Sukces! Nowy zwierzak został dodany do bazy.");
-        
-        // Czyszczenie formularza
-        setFormData({
-          imie: '',
-          rasa: '',
-          wiek: '',
-          status: 'Do adopcji',
-          foto: '',
-          opis: '',
-          gatunek: 'pies'
-        });
+        setFormData({ imie: '', rasa: '', wiek: '', status: 'Do adopcji', foto: '', opis: '', gatunek: 'pies' });
       } else {
-        const errorText = await res.text();
-        console.error("❌ Błąd serwera:", res.status, errorText);
-        alert(`❌ Błąd: Serwer odpowiedział statusem ${res.status}.`);
+        alert("❌ Błąd serwera. Spróbuj ponownie.");
       }
     } catch (err) {
-      console.error("❌ Błąd połączenia:", err);
       alert("❌ Brak połączenia z serwerem. Czy uruchomiłeś 'node server.js'?");
     }
   };
 
+  if (!token) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] pt-32 px-6 flex items-center justify-center">
+        <div className="w-full max-w-sm bg-zinc-900 p-10 rounded-[3.5rem] border border-white/10 shadow-2xl">
+          <h1 className="text-3xl font-black text-white mb-2 tracking-tighter">
+            Panel <span className="text-[#13ec13]">Admina</span>
+          </h1>
+          <p className="text-zinc-500 mb-8 font-medium">Podaj hasło, aby kontynuować</p>
+          {loginError && <p className="text-red-400 text-sm mb-4 font-bold">{loginError}</p>}
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+            <input
+              required
+              type="password"
+              placeholder="Hasło admina"
+              value={passwordInput}
+              onChange={e => setPasswordInput(e.target.value)}
+              className="bg-white/5 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-[#13ec13] transition-all"
+            />
+            <button
+              type="submit"
+              className="bg-[#13ec13] text-black font-black py-4 rounded-2xl hover:scale-[1.02] active:scale-95 transition-all"
+            >
+              Zaloguj
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] pt-32 px-6">
       <div className="max-w-2xl mx-auto bg-zinc-900 p-10 rounded-[3.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
-        
+
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#13ec13]/10 blur-[100px] rounded-full"></div>
 
         <div className="relative z-10">
-          <h1 className="text-4xl font-black text-white mb-2 tracking-tighter">
-            Panel <span className="text-[#13ec13]">Admina</span>
-          </h1>
+          <div className="flex justify-between items-start mb-2">
+            <h1 className="text-4xl font-black text-white tracking-tighter">
+              Panel <span className="text-[#13ec13]">Admina</span>
+            </h1>
+            <button
+              onClick={handleLogout}
+              className="text-zinc-500 hover:text-red-400 text-sm font-bold transition-colors"
+            >
+              Wyloguj
+            </button>
+          </div>
           <p className="text-zinc-500 mb-8 font-medium">System zarządzania podopiecznymi schroniska</p>
 
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">

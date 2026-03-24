@@ -21,14 +21,13 @@ function App() {
               </a>
             </div>
             
-            {/* Przycisk Panelu Admina obok Rejestracji, żebyś mógł go łatwo znaleźć */}
-            <div className="flex gap-4">
-              <a href="/admin" className="rounded-xl border-2 border-slate-200 px-6 py-2.5 text-sm font-bold text-slate-600 hover:border-[#13ec13] transition-all">
-                Panel Admina
+            <div className="flex items-center gap-6">
+              <a href="/#zwierzeta" className="text-sm font-bold text-slate-600 hover:text-[#13ec13] transition-colors">
+                Zwierzęta
               </a>
-              <button className="rounded-xl bg-[#13ec13] px-6 py-2.5 text-sm font-bold text-slate-900 shadow-md transition-all">
-                Rejestracja
-              </button>
+              <a href="/#opinie" className="text-sm font-bold text-slate-600 hover:text-[#13ec13] transition-colors">
+                Opinie
+              </a>
             </div>
           </div>
         </header>
@@ -37,7 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pies/:id" element={<DogDetails />} />
-          <Route path="/admin" element={<Admin />} /> {/* 2. DODAJEMY ŚCIEŻKĘ DO ADMINA */}
+          <Route path="/zarzadzanie-schroniskiem" element={<Admin />} />
         </Routes>
 
         <footer className="mt-20 border-t border-slate-100 py-10 text-center text-slate-400 text-sm">
