@@ -6,7 +6,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/zwierzeta')
+    fetch(`${import.meta.env.VITE_API_URL}/api/zwierzeta`)
       .then(res => res.json())
       .then(data => {
         setZwierzeta(data);
@@ -42,9 +42,9 @@ function Home() {
               Łapa Pomocy to miejsce, gdzie porzucone serca odnajdują nadzieję. Pomóż nam tworzyć historie ze szczęśliwym zakończeniem.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="px-10 py-5 bg-[#13ec13] text-slate-900 font-black rounded-2xl shadow-xl shadow-[#13ec13]/30 hover:bg-[#11d611] hover:-translate-y-1 transition-all duration-300">
+              <a href="#zwierzeta" className="px-10 py-5 bg-[#13ec13] text-slate-900 font-black rounded-2xl shadow-xl shadow-[#13ec13]/30 hover:bg-[#11d611] hover:-translate-y-1 transition-all duration-300 text-center">
                 Adoptuj teraz
-              </button>
+              </a>
               <button className="px-10 py-5 bg-white border-2 border-slate-100 text-slate-900 font-black rounded-2xl hover:bg-slate-50 hover:border-slate-200 hover:-translate-y-1 transition-all duration-300">
                 Wesprzyj nas
               </button>
@@ -64,8 +64,32 @@ function Home() {
         </div>
       </section>
 
+      {/* --- STATYSTYKI --- */}
+      <section className="bg-slate-900 py-16">
+        <div className="mx-auto max-w-[1200px] px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div>
+              <p className="text-5xl font-black text-[#13ec13] mb-2">{zwierzeta.length}</p>
+              <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Zwierząt w schronisku</p>
+            </div>
+            <div>
+              <p className="text-5xl font-black text-[#13ec13] mb-2">148</p>
+              <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Szczęśliwych adopcji</p>
+            </div>
+            <div>
+              <p className="text-5xl font-black text-[#13ec13] mb-2">3</p>
+              <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Lata działalności</p>
+            </div>
+            <div>
+              <p className="text-5xl font-black text-[#13ec13] mb-2">98%</p>
+              <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Zadowolonych adopcji</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- LISTA PODOPIECZNYCH --- */}
-      <main className="mx-auto w-full max-w-[1200px] px-6 py-24">
+      <main id="zwierzeta" className="mx-auto w-full max-w-[1200px] px-6 py-24">
         <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
           <div>
             <h2 className="text-5xl font-black tracking-tight text-slate-900 mb-4">
@@ -115,6 +139,64 @@ function Home() {
           ))}
         </div>
       </main>
+
+      {/* --- OPINIE --- */}
+      <section id="opinie" className="bg-white py-24 border-t border-slate-50">
+        <div className="mx-auto max-w-[1200px] px-6">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#13ec13]/10 text-[#13ec13] font-bold text-[10px] mb-4 uppercase tracking-[0.2em]">
+              Historie adopcji
+            </span>
+            <h2 className="text-5xl font-black tracking-tight text-slate-900">
+              Co mówią nasi <span className="text-[#13ec13]">adoptujący</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                imie: 'Marta K.',
+                lokalizacja: 'Warszawa',
+                opinia: 'Adoptowałam Burka 2 lata temu i to była najlepsza decyzja w moim życiu. Cały proces był prosty i profesjonalny. Polecam każdemu!',
+                zwierze: 'Adoptowała Burka',
+                avatar: 'M',
+              },
+              {
+                imie: 'Tomasz W.',
+                lokalizacja: 'Kraków',
+                opinia: 'Schronisko pomogło mi znaleźć idealnego towarzysza. Moja kotka Luna jest teraz gwiazdą całej rodziny. Dziękuję całemu zespołowi!',
+                zwierze: 'Adoptował Lunę',
+                avatar: 'T',
+              },
+              {
+                imie: 'Ania i Piotr',
+                lokalizacja: 'Wrocław',
+                opinia: 'Baliśmy się czy uda nam się zaopiekować psem, ale schronisko przeprowadziło nas przez wszystko krok po kroku. Rex jest teraz nieodłączną częścią rodziny.',
+                zwierze: 'Adoptowali Rexa',
+                avatar: 'A',
+              },
+            ].map((o) => (
+              <div key={o.imie} className="bg-slate-50 rounded-[2.5rem] p-8 flex flex-col gap-6 border border-slate-100">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-[#13ec13] text-lg">★</span>
+                  ))}
+                </div>
+                <p className="text-slate-600 leading-relaxed italic flex-1">"{o.opinia}"</p>
+                <div className="flex items-center gap-4 pt-2 border-t border-slate-200">
+                  <div className="w-12 h-12 rounded-2xl bg-[#13ec13] flex items-center justify-center text-slate-900 font-black text-lg flex-shrink-0">
+                    {o.avatar}
+                  </div>
+                  <div>
+                    <p className="font-black text-slate-900">{o.imie}</p>
+                    <p className="text-xs text-[#13ec13] font-bold uppercase tracking-wider">{o.zwierze} • {o.lokalizacja}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
